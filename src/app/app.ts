@@ -42,6 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   viewMode: 'home' | 'about' = 'home';
   activePolicy: 'faq' | 'privacy' | 'refund' | 'shipping' | null = null;
+  isMobileMenuOpen = false;
 
   selectedCategory = 'All';
   searchQuery = '';
@@ -59,7 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   selectedProduct: Product | null = null;
   activeImage = '';
-  selectedSize = ''; // Default empty string so no size is auto-selected
+  selectedSize = '';
   selectedColor = '';
 
   cartItems: CartItem[] = [];
@@ -170,23 +171,33 @@ export class AppComponent implements OnInit, OnDestroy {
   setCategory(category: string) {
     this.selectedCategory = category;
     this.viewMode = 'home';
+    this.isMobileMenuOpen = false;
   }
 
   toggleWishlist(product: Product, event?: Event) {
     if (event) event.stopPropagation();
     product.isWishlisted = !product.isWishlisted;
     if (product.isWishlisted) {
-      this.wishlistItems.push(product);
+      if (!this.wishlistItems.some(item => item.id === product.id)) {
+        this.wishlistItems.push(product);
+      }
     } else {
       this.wishlistItems = this.wishlistItems.filter(item => item.id !== product.id);
     }
   }
 
+  moveToCartFromWishlist(product: Product) {
+    this.toggleWishlist(product);
+    this.openProductModal(product);
+    this.isWishlistOpen = false;
+  }
+
   openProductModal(product: Product) {
+    if (!product) return;
     this.selectedProduct = product;
     this.activeImage = product.image;
-    this.selectedSize = ''; // Set to empty so no size is selected by default
-    this.selectedColor = product.colors[0];
+    this.selectedSize = '';
+    this.selectedColor = product.colors && product.colors.length > 0 ? product.colors[0] : '';
     this.isProductModalOpen = true;
   }
 
@@ -229,6 +240,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   getCartCount() {
     return this.cartItems.reduce((count, item) => count + item.quantity, 0);
+  }
+
+  getWishlistCount() {
+    return this.wishlistItems.length;
   }
 
   updateQuantity(item: CartItem, change: number) {
