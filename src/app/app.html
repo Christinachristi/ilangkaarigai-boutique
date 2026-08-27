@@ -1,3 +1,17 @@
+<!-- THEMED POPUP (10s GREETINGS) -->
+<div *ngIf="popupMessage" style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: #141414; border: 2px solid #d4af37; color: #ffd700; padding: 18px 32px; border-radius: 14px; font-weight: 700; font-size: 16px; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.9); text-align: center; letter-spacing: 0.5px;">
+  {{ popupMessage }}
+</div>
+
+<!-- CUSTOM THEMED ALERT MODAL -->
+<div *ngIf="customPopup.show" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 4000; display: flex; justify-content: center; align-items: center; padding: 15px;">
+  <div style="background: #141414; border: 2px solid #d4af37; padding: 25px; border-radius: 16px; color: #fff; max-width: 420px; width: 100%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9);">
+    <h3 style="color: #d4af37; font-size: 20px; margin-top: 0; font-family: 'Playfair Display', serif;">{{ customPopup.title }}</h3>
+    <p style="color: #ddd; font-size: 14px; line-height: 1.6; margin: 15px 0 25px 0;">{{ customPopup.message }}</p>
+    <button type="button" (click)="closeCustomPopup()" style="background: linear-gradient(90deg, #ffd700, #d4af37); color: #000; border: none; padding: 10px 24px; font-weight: 800; border-radius: 6px; cursor: pointer; text-transform: uppercase;">OK</button>
+  </div>
+</div>
+
 <!-- TOP ANNOUNCEMENT BAR -->
 <div style="background: linear-gradient(90deg, #d4af37, #800020, #d4af37); color: #ffffff; text-align: center; padding: 6px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;">
   🚚 FREE SHIPPING ALL OVER INDIA | SPECIAL FESTIVE COLLECTION ₹320 - ₹449 🚚
@@ -6,58 +20,49 @@
 <!-- HEADER NAVIGATION BAR -->
 <header style="border-bottom: 2px solid #d4af37; padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; background: #000000; position: sticky; top: 0; z-index: 1000; box-sizing: border-box; width: 100%;">
   
-  <!-- LOGO AND BRAND NAME -->
-  <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;" (click)="viewMode = 'home'; setCategory('All')">
+  <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;" (click)="viewMode = 'about'; setCategory('All')">
     <img src="/Images/logo.jpeg" alt="இளங்காரிகை" style="height: 40px; width: 40px; object-fit: contain; border-radius: 50%; border: 1px solid #d4af37;">
-    <span style="font-family: 'Mukta Malar', serif; font-size: 20px; font-weight: 800; background: linear-gradient(180deg, #ffe082 0%, #d4af37 50%, #aa7c11 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; white-space: nowrap;">
-      இளங்காரிகை
-    </span>
+    <div>
+      <span style="font-family: 'Mukta Malar', serif; font-size: 20px; font-weight: 800; background: linear-gradient(180deg, #ffe082 0%, #d4af37 50%, #aa7c11 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; white-space: nowrap; display: block;">
+        இளங்காரிகை
+      </span>
+      <span *ngIf="isLoggedIn && !isAdmin" style="font-size: 11px; color: #25D366; font-weight: 700;">
+        HI ({{ currentUserName }}) Welcome to இளங்காரிகை
+      </span>
+      <span *ngIf="isLoggedIn && isAdmin" style="font-size: 11px; color: #25D366; font-weight: 700;">
+        Welcome admin
+      </span>
+    </div>
   </div>
 
-  <!-- DESKTOP NAVIGATION -->
   <nav class="desktop-nav" style="display: flex; gap: 20px; align-items: center;">
-    <button (click)="viewMode = 'about'" [style.color]="viewMode === 'about' ? '#d4af37' : '#ffffff'" style="background: none; border: none; font-weight: 700; font-size: 13px; cursor: pointer; letter-spacing: 1px; text-transform: uppercase;">ABOUT US</button>
-    <button (click)="viewMode = 'home'; setCategory('All')" [style.color]="viewMode === 'home' && selectedCategory === 'All' ? '#d4af37' : '#ffffff'" style="background: none; border: none; font-weight: 700; font-size: 13px; cursor: pointer; letter-spacing: 1px; text-transform: uppercase;">CATEGORIES</button>
-    <button (click)="viewMode = 'home'; setCategory('Festive')" [style.color]="viewMode === 'home' && selectedCategory === 'Festive' ? '#d4af37' : '#ffffff'" style="background: none; border: none; font-weight: 700; font-size: 13px; cursor: pointer; letter-spacing: 1px; text-transform: uppercase;">COLLECTIONS</button>
-    <button (click)="viewMode = 'home'; setCategory('Avaasa')" [style.color]="viewMode === 'home' && selectedCategory === 'Avaasa' ? '#d4af37' : '#ffffff'" style="background: none; border: none; font-weight: 700; font-size: 13px; cursor: pointer; letter-spacing: 1px; text-transform: uppercase;">NEW ARRIVALS</button>
+    <button type="button" (click)="viewMode = 'about'" [style.color]="viewMode === 'about' ? '#d4af37' : '#ffffff'" style="background: none; border: none; font-weight: 700; font-size: 13px; cursor: pointer; letter-spacing: 1px; text-transform: uppercase;">ABOUT US</button>
+    <button type="button" (click)="viewMode = 'home'; setCategory('All')" [style.color]="viewMode === 'home' && selectedCategory === 'All' ? '#d4af37' : '#ffffff'" style="background: none; border: none; font-weight: 700; font-size: 13px; cursor: pointer; letter-spacing: 1px; text-transform: uppercase;">CATEGORIES</button>
+    <button type="button" (click)="viewMode = 'home'; setCategory('Festive')" [style.color]="viewMode === 'home' && selectedCategory === 'Festive' ? '#d4af37' : '#ffffff'" style="background: none; border: none; font-weight: 700; font-size: 13px; cursor: pointer; letter-spacing: 1px; text-transform: uppercase;">COLLECTIONS</button>
+    <button type="button" (click)="viewMode = 'home'; setCategory('New Arrivals')" [style.color]="viewMode === 'home' && selectedCategory === 'New Arrivals' ? '#d4af37' : '#ffffff'" style="background: none; border: none; font-weight: 700; font-size: 13px; cursor: pointer; letter-spacing: 1px; text-transform: uppercase;">NEW ARRIVALS</button>
+    <button type="button" *ngIf="isAdmin" (click)="viewMode = 'admin'" [style.color]="viewMode === 'admin' ? '#d4af37' : '#25D366'" style="background: none; border: none; font-weight: 800; font-size: 13px; cursor: pointer; letter-spacing: 1px; text-transform: uppercase;">⚙️ ADMIN PANEL</button>
   </nav>
 
-  <!-- ACTION ICONS WITH GLOW CLASS -->
   <div style="display: flex; gap: 18px; align-items: center;">
-    <button (click)="isSearchOpen = !isSearchOpen" class="action-icon" title="Search">🔍</button>
-
-    <!-- WISHLIST -->
-    <button (click)="isWishlistOpen = true" class="action-icon" style="position: relative;" title="Wishlist">
+    <button type="button" (click)="isSearchOpen = !isSearchOpen" class="action-icon" title="Search" style="background:none; border:none; cursor:pointer; font-size:18px;">🔍</button>
+    
+    <button type="button" *ngIf="!isAdmin" (click)="isWishlistOpen = true" class="action-icon" style="position: relative; background:none; border:none; cursor:pointer; font-size:18px;" title="Wishlist">
       ❤️
       <span *ngIf="getWishlistCount() >= 0" style="position: absolute; top: -2px; right: -6px; background: #d4af37; color: #000; font-size: 10px; font-weight: 800; border-radius: 50%; padding: 0 5px; min-width: 14px; text-align: center;">
         {{ getWishlistCount() }}
       </span>
     </button>
     
-    <!-- CART -->
-    <button (click)="isCartOpen = true" class="action-icon" style="position: relative;" title="Cart">
+    <button type="button" *ngIf="!isAdmin" (click)="isCartOpen = true" class="action-icon" style="position: relative; background:none; border:none; cursor:pointer; font-size:18px;" title="Cart">
       🛒
       <span *ngIf="getCartCount() >= 0" style="position: absolute; top: -2px; right: -6px; background: #d4af37; color: #000; font-size: 10px; font-weight: 800; border-radius: 50%; padding: 0 5px; min-width: 14px; text-align: center;">
         {{ getCartCount() }}
       </span>
     </button>
 
-    <button (click)="isProfileOpen = true" class="action-icon" title="Profile">👤</button>
-
-    <!-- HAMBURGER MENU (MOBILE) -->
-    <button (click)="isMobileMenuOpen = !isMobileMenuOpen" class="mobile-menu-toggle action-icon" style="border: 1px solid #d4af37; border-radius: 4px; padding: 4px 8px; display: none;">
-      ☰
-    </button>
+    <button type="button" (click)="isProfileOpen = true" class="action-icon" title="Profile" style="background:none; border:none; cursor:pointer; font-size:18px;">👤</button>
   </div>
 </header>
-
-<!-- MOBILE DROPDOWN MENU -->
-<div *ngIf="isMobileMenuOpen" style="background: #141414; border-bottom: 2px solid #d4af37; padding: 15px 20px; display: flex; flex-direction: column; gap: 12px; position: sticky; top: 67px; z-index: 999; width: 100%; box-sizing: border-box;">
-  <button (click)="viewMode = 'about'; isMobileMenuOpen = false" style="background: none; border: none; color: #d4af37; text-align: left; font-weight: 700; font-size: 14px; cursor: pointer; border-bottom: 1px solid #222; padding: 10px 0;">ABOUT US</button>
-  <button (click)="viewMode = 'home'; setCategory('All'); isMobileMenuOpen = false" style="background: none; border: none; color: #fff; text-align: left; font-weight: 700; font-size: 14px; cursor: pointer; border-bottom: 1px solid #222; padding: 10px 0;">CATEGORIES</button>
-  <button (click)="viewMode = 'home'; setCategory('Festive'); isMobileMenuOpen = false" style="background: none; border: none; color: #fff; text-align: left; font-weight: 700; font-size: 14px; cursor: pointer; border-bottom: 1px solid #222; padding: 10px 0;">COLLECTIONS</button>
-  <button (click)="viewMode = 'home'; setCategory('Avaasa'); isMobileMenuOpen = false" style="background: none; border: none; color: #fff; text-align: left; font-weight: 700; font-size: 14px; cursor: pointer; border-bottom: 1px solid #222; padding: 10px 0;">NEW ARRIVALS</button>
-</div>
 
 <!-- SEARCH BAR -->
 <div *ngIf="isSearchOpen" style="background: #181818; padding: 12px 20px; border-bottom: 1px solid #333; display: flex; justify-content: center; width: 100%; box-sizing: border-box;">
@@ -66,39 +71,72 @@
 
 <router-outlet></router-outlet>
 
-<!-- PAGE VIEW SWITCHER -->
+<!-- ABOUT US VIEW (DEFAULT) -->
+<ng-container *ngIf="viewMode === 'about'">
+  <div style="background: #000; color: #fff; min-height: 80vh;">
+    <section style="position: relative; height: 350px; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-bottom: 2px solid #d4af37; background: #000;">
+      <div class="hero-slideshow"></div>
+      <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.75); z-index: 2;"></div>
+      <div style="position: relative; z-index: 3; padding: 0 20px; max-width: 800px;">
+        <button type="button" (click)="viewMode = 'home'; setCategory('All')" style="background: #d4af37; color: #000; border: none; padding: 8px 18px; border-radius: 6px; cursor: pointer; font-weight: 800; margin-bottom: 15px; text-transform: uppercase;">Explore Collection →</button>
+        <p style="letter-spacing: 4px; color: #d4af37; text-transform: uppercase; font-size: 13px; margin-bottom: 8px;">Simple. Elegant. Truly You.</p>
+        <h1 style="font-size: 36px; font-weight: 500; color: #fff; letter-spacing: 2px; margin-bottom: 10px; font-family: 'Playfair Display', serif;">ABOUT ILANGKAARIGAI</h1>
+        <p style="color: #ddd; font-size: 14px;">Celebrating Grace, Craftsmanship, and Timeless Indian Elegance</p>
+      </div>
+    </section>
+
+    <main style="max-width: 1100px; margin: 0 auto; padding: 60px 20px;">
+      <div style="display: flex; align-items: center; gap: 50px; margin-bottom: 70px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+          <img src="/Images/Avaasakurthi.jpeg" alt="Story" style="width: 100%; height: 380px; object-fit: cover; border-radius: 12px; border: 1px solid #d4af37;">
+        </div>
+        <div style="flex: 1; min-width: 300px;">
+          <h2 style="color: #d4af37; font-size: 24px; margin-bottom: 15px; border-bottom: 1px solid #d4af37; padding-bottom: 5px;">Our Story</h2>
+          <p style="color: #ccc; font-size: 15px; line-height: 1.8; margin-bottom: 15px; text-align: justify;">
+            <strong>இளங்காரிகை (Ilangkaarigai)</strong> is more than just a clothing label—it is a tribute to the strength, beauty, and individuality of every woman. Rooted in traditional Indian craftsmanship and blended with contemporary elegance, we curate ethnic wear that speaks to the modern woman.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+</ng-container>
+
+<!-- PAGE VIEW SWITCHER: HOME / SHOP -->
 <ng-container *ngIf="viewMode === 'home'">
   <div style="position: relative; height: 320px; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-bottom: 2px solid #d4af37; width: 100%;">
     <div class="hero-slideshow"></div>
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2;"></div>
     <div style="position: relative; z-index: 3; padding: 0 15px; box-sizing: border-box;">
       <h3 style="letter-spacing: 3px; color: #d4af37; text-transform: uppercase; font-size: 12px; margin: 0;">Simple. Elegant. Truly You.</h3>
-      <h1 style="font-size: 32px; margin: 10px 0; font-weight: 400; color: #ffffff; letter-spacing: 2px;">FESTIVE KURTIS COLLECTION</h1>
-      <p style="color: #ddd; font-size: 14px; margin: 0;">Starting from <span style="color: #d4af37; font-weight: 700; font-size: 20px;">₹320</span> with Free Shipping</p>
+      <h1 style="font-size: 32px; margin: 10px 0; font-weight: 400; color: #ffffff; letter-spacing: 2px;">{{ selectedCategory.toUpperCase() }} COLLECTION</h1>
     </div>
   </div>
 
-  <!-- PRODUCTS GRID CONTAINER (CENTER ALIGNED) -->
   <div class="products-grid-container" style="background-color: #0c0c0c; padding: 40px 15px; min-height: 80vh; box-sizing: border-box; width: 100%;">
     <div style="max-width: 1200px; margin: 0 auto; width: 100%;">
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; justify-content: center;">
         
         <div *ngFor="let product of filteredProducts()" 
             (click)="openProductModal(product)" 
-            class="product-card">
+            class="product-card"
+            [style.opacity]="product.inStock ? '1' : '0.6'"
+            style="cursor: pointer; background: #181818; border: 1px solid #2a2a2a; border-radius: 12px; position: relative; overflow: hidden;">
           
-          <button (click)="toggleWishlist(product, $event)" 
-                  [style.color]="product.isWishlisted ? '#ff4d4d' : '#ffffff'"
+          <button type="button" *ngIf="!isAdmin" (click)="toggleWishlist(product, $event)" 
+                  [style.color]="isWishlisted(product) ? '#ff4d4d' : '#ffffff'"
                   style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 16px; cursor: pointer; z-index: 5;">
-            {{ product.isWishlisted ? '❤️' : '🤍' }}
+            {{ isWishlisted(product) ? '❤️' : '🤍' }}
           </button>
 
-          <div style="position: absolute; top: 12px; left: 12px; background: #800020; color: #fff; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; border: 1px solid #d4af37; z-index: 5;">
+          <div *ngIf="product.inStock" style="position: absolute; top: 12px; left: 12px; background: #800020; color: #fff; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; border: 1px solid #d4af37; z-index: 5;">
             FREE SHIPPING
           </div>
+          <div *ngIf="!product.inStock" style="position: absolute; top: 12px; left: 12px; background: #cc0000; color: #fff; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 20px; z-index: 5;">
+            OUT OF STOCK
+          </div>
 
-          <div class="product-img-container">
-            <img [src]="product.image" [alt]="product.title" class="product-img">
+          <div class="product-img-container" style="width: 100%; height: 280px; overflow: hidden; background: #000;">
+            <img [src]="product.image" [alt]="product.title" class="product-img" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
           
           <div style="padding: 16px; color: #ffffff;">
@@ -114,208 +152,371 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="viewMode === 'about'">
-  <app-about-us></app-about-us>
-</ng-container>
+<!-- ADMIN DASHBOARD VIEW -->
+<ng-container *ngIf="viewMode === 'admin' && isAdmin">
+  <div style="background: #111; padding: 40px 20px; min-height: 80vh; color: #fff; max-width: 1000px; margin: 0 auto; box-sizing: border-box;">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #d4af37; padding-bottom: 15px; margin-bottom: 30px;">
+      <h2 style="color: #d4af37; margin: 0; font-size: 24px;">⚙️ Admin Inventory Dashboard</h2>
+      <button type="button" (click)="viewMode = 'home'" style="background: #333; color: #fff; border: 1px solid #555; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Back to Shop</button>
+    </div>
 
-<!-- FOOTER -->
-<footer style="background-color: #080808; border-top: 2px solid #d4af37; padding: 40px 15px 20px 15px; color: #aaa; box-sizing: border-box; width: 100%;">
-  <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-bottom: 30px;">
-    <div>
-      <h4 style="color: #d4af37; font-size: 13px; letter-spacing: 1px; margin-bottom: 10px;">JOIN NEWSLETTER</h4>
-      <div style="display: flex; gap: 8px;">
-        <input type="email" [(ngModel)]="newsletterEmail" placeholder="Enter e-mail" style="padding: 9px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; font-size: 12px; flex: 1; outline: none;">
-        <button (click)="subscribeNewsletter()" style="background: #d4af37; color: #000; border: none; padding: 9px 15px; font-weight: 700; border-radius: 6px; cursor: pointer; font-size: 12px;">SUBMIT</button>
+    <div style="background: #181818; padding: 25px; border-radius: 12px; border: 1px solid #333; margin-bottom: 40px;">
+      <h3 style="color: #d4af37; margin-top: 0; font-size: 18px; margin-bottom: 15px;">Add New Kurti (Publishes to New Arrivals First)</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px;">
+        <div>
+          <label style="font-size: 11px; color: #aaa; display: block; margin-bottom: 5px;">PRODUCT TITLE *</label>
+          <input type="text" [(ngModel)]="newTitle" placeholder="Title" style="width: 100%; padding: 10px; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px;">
+        </div>
+        <div>
+          <label style="font-size: 11px; color: #aaa; display: block; margin-bottom: 5px;">BRAND *</label>
+          <input type="text" [(ngModel)]="newBrand" placeholder="Brand" style="width: 100%; padding: 10px; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px;">
+        </div>
+        <div>
+          <label style="font-size: 11px; color: #aaa; display: block; margin-bottom: 5px;">CATEGORY *</label>
+          <input type="text" [(ngModel)]="newCategory" placeholder="Category" style="width: 100%; padding: 10px; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px;">
+        </div>
+        <div>
+          <label style="font-size: 11px; color: #aaa; display: block; margin-bottom: 5px;">PRICE (₹)</label>
+          <input type="number" [(ngModel)]="newPrice" style="width: 100%; padding: 10px; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px;">
+        </div>
+        <div>
+          <label style="font-size: 11px; color: #aaa; display: block; margin-bottom: 5px;">FABRIC</label>
+          <input type="text" [(ngModel)]="newFabric" style="width: 100%; padding: 10px; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px;">
+        </div>
+        <div>
+          <label style="font-size: 11px; color: #aaa; display: block; margin-bottom: 5px;">UPLOAD IMAGE FILE *</label>
+          <input type="file" (change)="onImageFileSelected($event)" accept="image/*" style="width: 100%; padding: 8px; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; font-size: 12px; cursor: pointer;">
+        </div>
       </div>
+
+      <div style="margin-bottom: 20px; background: #121212; padding: 15px; border-radius: 8px; border: 1px solid #2a2a2a;">
+        <label style="font-size: 12px; color: #d4af37; display: block; margin-bottom: 10px; font-weight: 700;">INITIAL SIZES & STOCK AVAILABILITY:</label>
+        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+          <label *ngFor="let s of availableSizesList" style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px;">
+            <input type="checkbox" [(ngModel)]="newSizeStocks[s]" style="width: 16px; height: 16px; accent-color: #d4af37;">
+            {{ s }}
+          </label>
+        </div>
+      </div>
+
+      <button type="button" (click)="addProduct()" style="background: #d4af37; color: #000; border: none; padding: 12px 24px; font-weight: 800; border-radius: 6px; cursor: pointer;">Publish Product</button>
     </div>
-    <div>
-      <h4 style="color: #d4af37; font-size: 13px; letter-spacing: 1px; margin-bottom: 10px;">LINKS</h4>
-      <ul style="list-style: none; padding: 0; font-size: 13px; line-height: 2.2;">
-        <li><a href="#" (click)="viewMode = 'about'; $event.preventDefault()" style="color: #ccc; text-decoration: none;">About Us</a></li>
-        <li><a href="#" (click)="isSizeChartOpen = true; $event.preventDefault()" style="color: #ccc; text-decoration: none;">Size Chart</a></li>
-        <li><a href="#" (click)="activePolicy = 'faq'; $event.preventDefault()" style="color: #ccc; text-decoration: none;">FAQs</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4 style="color: #d4af37; font-size: 13px; letter-spacing: 1px; margin-bottom: 10px;">POLICIES</h4>
-      <ul style="list-style: none; padding: 0; font-size: 13px; line-height: 2.2;">
-        <li><a href="#" (click)="activePolicy = 'privacy'; $event.preventDefault()" style="color: #ccc; text-decoration: none;">Privacy Policy</a></li>
-        <li><a href="#" (click)="activePolicy = 'refund'; $event.preventDefault()" style="color: #ccc; text-decoration: none;">Refund Policy</a></li>
-        <li><a href="#" (click)="activePolicy = 'shipping'; $event.preventDefault()" style="color: #ccc; text-decoration: none;">Shipping Policy</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4 style="color: #d4af37; font-size: 13px; letter-spacing: 1px; margin-bottom: 10px;">CONNECT</h4>
-      <div style="display: flex; gap: 12px;">
-        <a href="https://www.instagram.com/ilangkaarigai/" target="_blank" style="text-decoration:none; color: #d4af37; font-size: 18px;">📸</a>
-        <a href="https://wa.me/919876543210" target="_blank" style="text-decoration:none; color: #25D366; font-size: 18px;">💬</a>
+
+    <h3 style="color: #d4af37; font-size: 18px; margin-bottom: 15px;">Manage Inventory & Sizes</h3>
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+      <div *ngFor="let p of products" style="background: #181818; padding: 18px; border-radius: 8px; border: 1px solid #2a2a2a; display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <img [src]="p.image" style="width: 50px; height: 60px; object-fit: cover; border-radius: 6px;">
+            <div>
+              <h4 style="margin: 0; font-size: 15px; color: #fff;">{{ p.title }}</h4>
+              <span style="font-size: 12px; color: #d4af37;">₹{{ p.price }} | {{ p.brand }}</span>
+            </div>
+          </div>
+          <button type="button" (click)="deleteProduct(p.id)" style="background: #333; color: #ff4d4d; border: 1px solid #555; padding: 6px 14px; border-radius: 6px; cursor: pointer;">Delete</button>
+        </div>
+        <div style="background: #121212; padding: 10px; border-radius: 6px; display: flex; gap: 10px; flex-wrap: wrap;">
+          <button type="button" *ngFor="let sObj of p.sizeStocks" (click)="toggleSizeStock(p, sObj)" [style.background]="sObj.inStock ? '#25D366' : '#cc0000'" style="color: #fff; border: none; padding: 5px 12px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer;">
+            {{ sObj.size }}: {{ sObj.inStock ? 'Available' : 'Out' }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
-  <div style="border-top: 1px solid #222; padding-top: 15px; text-align: center; font-size: 12px; color: #666;">
-    <h3 style="color: #d4af37; font-family: 'Mukta Malar', serif; font-size: 18px; margin: 0 0 4px 0;">{{ boutiqueName }}</h3>
-    <p style="margin: 0;">Copyright © 2026 Ilangkaarigai. All Rights Reserved.</p>
+</ng-container>
+
+<!-- CREATIVE & PREMIUM LUXURY FOOTER -->
+<footer style="background-color: #050505; border-top: 2px solid #d4af37; padding: 60px 20px 30px 20px; color: #ccc; box-sizing: border-box; width: 100%;">
+  <div style="max-width: 1250px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px; margin-bottom: 50px;">
+    <div>
+      <h3 style="font-family: 'Mukta Malar', serif; font-size: 20px; font-weight: 800; background: linear-gradient(180deg, #ffe082 0%, #d4af37 50%, #aa7c11 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; display: inline-block;">
+        {{ boutiqueName }}
+      </h3>
+      <p style="font-size: 13px; color: #999; line-height: 1.6; margin-bottom: 20px;">
+        Subscribe to get special offers, free giveaways, and once-in-a-lifetime festive collections.
+      </p>
+      <div style="display: flex; gap: 10px;">
+        <input type="email" [(ngModel)]="newsletterEmail" placeholder="Enter your e-mail address..." style="padding: 12px 16px; background: #000; border: 1px solid #d4af37; color: #fff; border-radius: 8px; font-size: 13px; flex: 1; outline: none;">
+        <button type="button" (click)="subscribeNewsletter()" style="background: linear-gradient(90deg, #ffd700, #d4af37); color: #000; border: none; padding: 12px 22px; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(212,175,55,0.3);">JOIN</button>
+      </div>
+    </div>
+
+    <div>
+      <h4 style="color: #d4af37; font-size: 14px; letter-spacing: 1.5px; margin-bottom: 18px; text-transform: uppercase; font-weight: 700;">Quick Links</h4>
+      <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 2.4;">
+        <li><a href="#" (click)="viewMode = 'about'; $event.preventDefault()" style="color: #bbb; text-decoration: none;">✦ About Our Boutique</a></li>
+        <li><a href="#" (click)="isSizeChartOpen = true; $event.preventDefault()" style="color: #bbb; text-decoration: none;">✦ Size Chart Guide</a></li>
+        <li><a href="#" (click)="activePolicy = 'faq'; $event.preventDefault()" style="color: #bbb; text-decoration: none;">✦ Frequently Asked Questions</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 style="color: #d4af37; font-size: 14px; letter-spacing: 1.5px; margin-bottom: 18px; text-transform: uppercase; font-weight: 700;">Customer Policies</h4>
+      <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 2.4;">
+        <li><a href="#" (click)="activePolicy = 'privacy'; $event.preventDefault()" style="color: #bbb; text-decoration: none;">✦ Privacy Policy</a></li>
+        <li><a href="#" (click)="activePolicy = 'refund'; $event.preventDefault()" style="color: #bbb; text-decoration: none;">✦ Return & Refund Policy</a></li>
+        <li><a href="#" (click)="activePolicy = 'shipping'; $event.preventDefault()" style="color: #bbb; text-decoration: none;">✦ Shipping & Delivery</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 style="color: #d4af37; font-size: 14px; letter-spacing: 1.5px; margin-bottom: 18px; text-transform: uppercase; font-weight: 700;">Connect With Us</h4>
+      <p style="font-size: 13px; color: #999; line-height: 1.6; margin-bottom: 15px;">
+        Follow our daily styling updates & festive launches on social media.
+      </p>
+      <div style="display: flex; gap: 15px; align-items: center;">
+        <a href="https://www.instagram.com/ilangkaarigai/" target="_blank" style="background: #141414; border: 1px solid #d4af37; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; text-decoration: none; font-size: 20px;" title="Instagram">📸</a>
+        <a href="https://wa.me/919876543210" target="_blank" style="background: #141414; border: 1px solid #25D366; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; text-decoration: none; font-size: 20px;" title="WhatsApp Support">💬</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="border-top: 1px solid #222; padding-top: 25px; text-align: center; font-size: 13px; color: #777;">
+    <div style="color: #d4af37; font-size: 16px; margin-bottom: 8px;">✦ ❖ ✦</div>
+    <h3 style="color: #d4af37; font-family: 'Mukta Malar', serif; font-size: 22px; margin: 0 0 6px 0; font-weight: 700;">{{ boutiqueName }}</h3>
+    <p style="margin: 0; color: #888; font-size: 12px;">Crafted with Elegance & Tradition • Copyright © 2026 Ilangkaarigai. All Rights Reserved.</p>
   </div>
 </footer>
 
-<app-policy-modal *ngIf="activePolicy" [policyType]="activePolicy" (closeEvent)="activePolicy = null"></app-policy-modal>
+<!-- SIZE CHART MODAL -->
+<div *ngIf="isSizeChartOpen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 3000; display: flex; justify-content: center; align-items: center; padding: 15px; box-sizing: border-box;">
+  <div style="background: #141414; border: 2px solid #d4af37; padding: 25px; border-radius: 16px; color: #fff; max-width: 550px; width: 100%; position: relative; box-sizing: border-box;">
+    <button type="button" (click)="isSizeChartOpen = false" style="position: absolute; top: 15px; right: 15px; background: #222; border: 1px solid #444; color: #fff; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px;">✕</button>
+    <h3 style="color: #d4af37; text-align: center; margin-top: 0; margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 20px;">SIZE GUIDE</h3>
+    <div>
+      <table style="width: 100%; text-align: center; border-collapse: collapse; font-size: 13px;">
+        <tr style="border-bottom: 1px solid #444; color: #d4af37;"><th style="padding: 10px;">SIZE</th><th>BUST (INCHES)</th><th>WAIST (INCHES)</th><th>HIP (INCHES)</th></tr>
+        <tr style="border-bottom: 1px solid #222;"><td style="padding: 10px; font-weight:700;">S</td><td>36</td><td>30</td><td>38</td></tr>
+        <tr style="border-bottom: 1px solid #222;"><td style="padding: 10px; font-weight:700;">M</td><td>38</td><td>32</td><td>40</td></tr>
+        <tr style="border-bottom: 1px solid #222;"><td style="padding: 10px; font-weight:700;">L</td><td>40</td><td>34</td><td>42</td></tr>
+        <tr style="border-bottom: 1px solid #222;"><td style="padding: 10px; font-weight:700;">XL</td><td>42</td><td>36</td><td>44</td></tr>
+        <tr style="border-bottom: 1px solid #222;"><td style="padding: 10px; font-weight:700;">2XL</td><td>44</td><td>38</td><td>46</td></tr>
+        <tr><td style="padding: 10px; font-weight:700;">3XL</td><td>46</td><td>40</td><td>48</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
 
-<!-- WISHLIST DRAWER -->
-<div *ngIf="isWishlistOpen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 2000; display: flex; justify-content: flex-end;">
-  <div style="width: 100%; max-width: 420px; background: #141414; border-left: 2px solid #d4af37; height: 100vh; padding: 30px; position: relative; color: #fff; overflow-y: auto; box-sizing: border-box;">
-    <button (click)="isWishlistOpen = false" style="position: absolute; top: 20px; right: 20px; background: #222; border: 1px solid #444; color: #fff; border-radius: 50%; width: 32px; height: 32px; cursor: pointer;">✕</button>
-    <h2 style="font-size: 22px; margin-bottom: 20px; color: #d4af37; letter-spacing: 1px;">Your Wishlist</h2>
+<!-- POLICY MODAL -->
+<div *ngIf="activePolicy" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 3000; display: flex; justify-content: center; align-items: center; padding: 15px;">
+  <div style="background: #141414; border: 2px solid #d4af37; padding: 25px; border-radius: 12px; color: #fff; max-width: 550px; width: 100%; position: relative; max-height: 85vh; overflow-y: auto;">
+    <button type="button" (click)="activePolicy = null" style="position: absolute; top: 15px; right: 15px; background: #222; border: 1px solid #444; color: #fff; border-radius: 50%; width: 30px; height: 30px; cursor: pointer;">✕</button>
+    <div *ngIf="activePolicy === 'faq'">
+      <h2 style="color: #d4af37; text-align: center; font-size: 20px; margin-bottom: 20px; font-family: 'Playfair Display', serif;">FAQS</h2>
+      <div style="font-size: 13px; line-height: 1.7; color: #ccc;">இளங்காரிகை is an exclusive online boutique...</div>
+    </div>
+  </div>
+</div>
 
-    <div *ngIf="wishlistItems.length === 0" style="text-align: center; margin-top: 60px;">
-      <p style="font-size: 14px; color: #aaa;">No product is added to your wishlist</p>
-      <button (click)="isWishlistOpen = false" style="background: #d4af37; color: #000; border: none; padding: 10px 20px; font-weight: 700; cursor: pointer; margin-top: 15px; border-radius: 6px; text-transform: uppercase;">CONTINUE SHOPPING</button>
+<!-- PROFILE / AUTH DRAWER -->
+<div *ngIf="isProfileOpen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 2000; display: flex; justify-content: flex-end;">
+  <div style="width: 100%; max-width: 400px; background: #141414; border-left: 2px solid #d4af37; height: 100vh; padding: 25px; position: relative; color: #fff; overflow-y: auto; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between;">
+    <div>
+      <button type="button" (click)="isProfileOpen = false" style="position: absolute; top: 20px; right: 20px; background: #222; border: 1px solid #444; color: #fff; border-radius: 50%; width: 32px; height: 32px; cursor: pointer;">✕</button>
+      
+      <div style="text-align: center; margin-bottom: 25px; margin-top: 10px;">
+        <span style="font-family: 'Mukta Malar', serif; font-size: 22px; font-weight: 800; background: linear-gradient(180deg, #ffe082 0%, #d4af37 50%, #aa7c11 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+          Welcome To இளங்காரிகை
+        </span>
+      </div>
+
+      <div *ngIf="!isLoggedIn">
+        <!-- LOGIN VIEW -->
+        <div *ngIf="authView === 'login'" style="display: flex; flex-direction: column; gap: 14px;">
+          <div style="text-align: center; margin-bottom: 5px;">
+            <span style="color: #d4af37; font-weight: 700; font-size: 15px; border-bottom: 2px solid #d4af37; padding-bottom: 4px; display: inline-block; letter-spacing: 1px;">EXISTING LOGIN</span>
+          </div>
+          <div>
+            <label style="font-size: 11px; display: block; margin-bottom: 4px; color: #aaa;">USER ID / EMAIL *</label>
+            <input type="email" [(ngModel)]="authEmail" placeholder="Enter Email ID" style="width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="font-size: 11px; display: block; margin-bottom: 4px; color: #aaa;">PASSWORD *</label>
+            <input type="password" [(ngModel)]="authPassword" placeholder="Enter Password" style="width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; box-sizing: border-box;">
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 2px;">
+            <button type="button" (click)="authView = 'forgot'" style="background:none; border:none; color:#d4af37; cursor:pointer; text-decoration: underline;">Forgot Password?</button>
+            <button type="button" (click)="authView = 'register'" style="background:none; border:none; color:#25D366; cursor:pointer; text-decoration: underline; font-weight:600;">Create a new User</button>
+          </div>
+          <button type="button" (click)="loginUser()" style="background: linear-gradient(90deg, #ffd700, #d4af37); color: #000; border: none; padding: 12px; font-weight: 800; cursor: pointer; border-radius: 6px; text-transform: uppercase; margin-top: 10px;">LOG IN</button>
+        </div>
+
+        <!-- REGISTER VIEW -->
+        <div *ngIf="authView === 'register'" style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="text-align: center; margin-bottom: 5px;">
+            <span style="color: #d4af37; font-weight: 700; font-size: 15px; border-bottom: 2px solid #d4af37; padding-bottom: 4px; display: inline-block; letter-spacing: 1px;">CREATE NEW USER</span>
+          </div>
+          <div>
+            <label style="font-size: 11px; display: block; margin-bottom: 3px; color: #aaa;">FULL NAME *</label>
+            <input type="text" [(ngModel)]="authName" placeholder="Full Name" style="width: 100%; padding: 9px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="font-size: 11px; display: block; margin-bottom: 3px; color: #aaa;">MOBILE NUMBER *</label>
+            <input type="tel" [(ngModel)]="authPhone" placeholder="Mobile Number" style="width: 100%; padding: 9px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="font-size: 11px; display: block; margin-bottom: 3px; color: #aaa;">EMAIL ID *</label>
+            <input type="email" [(ngModel)]="authEmail" placeholder="Email Address" style="width: 100%; padding: 9px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="font-size: 11px; display: block; margin-bottom: 3px; color: #aaa;">PASSWORD *</label>
+            <input type="password" [(ngModel)]="authPassword" placeholder="Password" style="width: 100%; padding: 9px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="font-size: 11px; display: block; margin-bottom: 3px; color: #aaa;">CONFIRM PASSWORD *</label>
+            <input type="password" [(ngModel)]="authConfirmPassword" placeholder="Confirm Password" style="width: 100%; padding: 9px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; box-sizing: border-box;">
+          </div>
+          <button type="button" (click)="registerUser()" style="background: linear-gradient(90deg, #ffd700, #d4af37); color: #000; border: none; padding: 12px; font-weight: 800; cursor: pointer; border-radius: 6px; text-transform: uppercase; margin-top: 5px;">SIGN UP</button>
+          <button type="button" (click)="authView = 'login'" style="background: none; border: none; color: #aaa; font-size: 12px; cursor: pointer; margin-top: 5px;">Already have an account? Login</button>
+        </div>
+
+        <!-- FORGOT PASSWORD VIEW -->
+        <div *ngIf="authView === 'forgot'" style="display: flex; flex-direction: column; gap: 14px;">
+          <h3 style="color: #d4af37; font-size: 16px; margin: 0 0 5px 0;">Reset Password</h3>
+          <div *ngIf="!forgotVerifiedUser">
+            <input type="email" [(ngModel)]="forgotEmail" placeholder="Enter Email ID" style="width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; box-sizing: border-box; margin-bottom: 10px;">
+            <button type="button" (click)="verifyForgotEmail()" style="width: 100%; background: #d4af37; color: #000; border: none; padding: 11px; font-weight: 800; border-radius: 6px; cursor: pointer;">VERIFY EMAIL</button>
+          </div>
+          <div *ngIf="forgotVerifiedUser">
+            <input type="password" [(ngModel)]="newPasswordInput" placeholder="New Password" style="width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; box-sizing: border-box; margin-bottom: 10px;">
+            <input type="password" [(ngModel)]="confirmNewPasswordInput" placeholder="Confirm New Password" style="width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; box-sizing: border-box; margin-bottom: 10px;">
+            <button type="button" (click)="saveNewPassword()" style="width: 100%; background: #25D366; color: #000; border: none; padding: 11px; font-weight: 800; border-radius: 6px; cursor: pointer;">SAVE PASSWORD</button>
+          </div>
+          <button type="button" (click)="authView = 'login'" style="background: none; border: none; color: #aaa; font-size: 12px; cursor: pointer;">Back to Login</button>
+        </div>
+      </div>
+
+      <!-- IF LOGGED IN -->
+      <div *ngIf="isLoggedIn" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+        <h2 style="font-size: 20px; color: #d4af37; margin: 0;">Customer Account</h2>
+        <div style="background: #1e1e1e; padding: 15px; border-radius: 8px; border: 1px solid #333;">
+          <p style="margin: 0; font-size: 13px; color: #fff;">Logged in as:</p>
+          <p *ngIf="!isAdmin" style="margin: 5px 0 0 0; font-weight: 700; color: #d4af37; font-size: 13px;">HI ({{ currentUserName }}) Welcome to இளங்காரிகை</p>
+          <p *ngIf="isAdmin" style="margin: 5px 0 0 0; font-weight: 700; color: #d4af37; font-size: 13px;">Welcome admin</p>
+        </div>
+        <button type="button" *ngIf="isAdmin" (click)="viewMode = 'admin'; isProfileOpen = false" style="background: #25D366; color: #000; border: none; padding: 12px; font-weight: 800; border-radius: 6px; cursor: pointer;">OPEN ADMIN PANEL</button>
+        <button type="button" (click)="logoutUser()" style="background: #333; color: #ff4d4d; border: 1px solid #555; padding: 12px; font-weight: 700; border-radius: 6px; cursor: pointer;">LOGOUT</button>
+      </div>
     </div>
 
-    <div *ngFor="let item of wishlistItems" style="display: flex; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 15px; align-items: center;">
-      <img [src]="item.image" style="width: 60px; height: 75px; object-fit: cover; border-radius: 6px; border: 1px solid #333;">
-      <div style="flex: 1;">
-        <h4 style="margin: 0; font-size: 14px; color: #fff;">{{ item.title }}</h4>
-        <span style="font-weight: 700; color: #d4af37; display: block; margin-top: 4px;">₹{{ item.price }}</span>
+    <div style="margin-top: 30px; border-top: 1px dashed #333; padding-top: 20px; text-align: center;">
+      <div style="color: #d4af37; font-size: 14px; margin-bottom: 8px;">✦ ❖ ✦</div>
+      <p style="font-family: 'Playfair Display', serif; font-style: italic; color: #aaa; font-size: 12px; margin: 0 0 6px 0;">"Elegance is when the inside is as beautiful as the outside."</p>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT QUICK VIEW MODAL (ADMIN VIEW-ONLY GUARD) -->
+<div *ngIf="isProductModalOpen && selectedProduct" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 2500; display: flex; justify-content: center; align-items: center; padding: 15px;">
+  <div style="width: 100%; max-width: 500px; background: #141414; border: 2px solid #d4af37; border-radius: 16px; color: #fff; padding: 20px; position: relative;">
+    <button type="button" (click)="isProductModalOpen = false" style="position: absolute; top: 12px; right: 15px; background: #222; border: 1px solid #444; color: #fff; border-radius: 50%; width: 32px; height: 32px; cursor: pointer;">✕</button>
+
+    <span style="color: #d4af37; font-size: 11px; text-transform: uppercase; font-weight: 700;">{{ selectedProduct.brand }}</span>
+    <h2 style="font-size: 18px; margin: 4px 0 12px 0;">{{ selectedProduct.title }}</h2>
+
+    <div *ngIf="!selectedProduct.inStock" style="background: #cc0000; color: #fff; text-align: center; padding: 6px; font-weight: 800; font-size: 12px; border-radius: 4px; margin-bottom: 10px;">
+      CURRENTLY OUT OF STOCK
+    </div>
+
+    <div style="height: 220px; border-radius: 10px; overflow: hidden; background: #000; text-align: center;">
+      <img [src]="activeImage" style="width: 100%; height: 100%; object-fit: contain;">
+    </div>
+
+    <div style="margin: 12px 0; display: flex; justify-content: space-between; align-items: center; background: #1e1e1e; padding: 10px 14px; border-radius: 8px;">
+      <span style="font-size: 22px; font-weight: 700; color: #d4af37;">₹{{ selectedProduct.price }}</span>
+      <span style="background: #333; color: #ddd; padding: 4px 10px; border-radius: 4px; font-size: 11px;">{{ selectedProduct.fabric }}</span>
+    </div>
+
+    <div style="margin-bottom: 12px;" *ngIf="selectedProduct.inStock">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <label style="font-size: 11px; color: #aaa;">SELECT SIZE:</label>
+        <button type="button" (click)="isSizeChartOpen = true" style="background: none; border: none; color: #d4af37; font-size: 12px; cursor: pointer; text-decoration: underline; font-weight: 600;">📏 Size Chart Guide</button>
       </div>
-      <button (click)="moveToCartFromWishlist(item)" style="background: #d4af37; color: #000; border: none; padding: 6px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer;">Select Size</button>
-      <button (click)="toggleWishlist(item)" style="background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 12px; font-weight: 600;">Remove</button>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button type="button" *ngFor="let sObj of selectedProduct.sizeStocks" (click)="sObj.inStock ? selectedSize = sObj.size : null" [style.background]="selectedSize === sObj.size ? '#d4af37' : (sObj.inStock ? '#1a1a1a' : '#222')" [style.color]="selectedSize === sObj.size ? '#000' : (sObj.inStock ? '#fff' : '#555')" [style.text-decoration]="sObj.inStock ? 'none' : 'line-through'" style="border: 1px solid #d4af37; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer;">
+          {{ sObj.size }}
+        </button>
+      </div>
+    </div>
+
+    <button *ngIf="!isAdmin && selectedProduct.inStock" type="button" (click)="addToCartFromModal()" style="width: 100%; background: linear-gradient(90deg, #ffd700, #d4af37); color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase;">
+      🛒 ADD TO CART • ₹{{ selectedProduct.price }}
+    </button>
+
+    <button *ngIf="!isAdmin && !selectedProduct.inStock" type="button" disabled style="width: 100%; background: #333; color: #777; border: none; padding: 14px; border-radius: 8px; font-weight: 800; font-size: 15px; text-transform: uppercase; cursor: not-allowed;">
+      OUT OF STOCK
+    </button>
+
+    <div *ngIf="isAdmin" style="background: #222; color: #25D366; text-align: center; padding: 12px; font-weight: 700; border-radius: 6px; font-size: 13px; border: 1px dashed #d4af37;">
+      🛡️ ADMIN VIEW-ONLY MODE (Cart disabled)
     </div>
   </div>
 </div>
 
 <!-- CART DRAWER -->
-<div *ngIf="isCartOpen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 2000; display: flex; justify-content: flex-end;">
-  <div style="width: 100%; max-width: 420px; background: #141414; border-left: 2px solid #d4af37; height: 100vh; padding: 25px 20px; position: relative; color: #fff; display: flex; flex-direction: column; box-sizing: border-box;">
-    
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-shrink: 0;">
-      <h2 style="font-size: 22px; margin: 0; color: #d4af37; letter-spacing: 1px;">Your Shopping Cart</h2>
-      <button (click)="isCartOpen = false" style="background: #222; border: 1px solid #444; color: #fff; border-radius: 50%; width: 32px; height: 32px; cursor: pointer;">✕</button>
+<div *ngIf="isCartOpen && !isAdmin" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 2000; display: flex; justify-content: flex-end;">
+  <div style="width: 100%; max-width: 420px; background: #141414; border-left: 2px solid #d4af37; height: 100vh; padding: 25px; position: relative; color: #fff; display: flex; flex-direction: column; box-sizing: border-box;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+      <h2 style="font-size: 22px; margin: 0; color: #d4af37;">Your Shopping Cart</h2>
+      <button type="button" (click)="isCartOpen = false" style="background: #222; border: 1px solid #444; color: #fff; border-radius: 50%; width: 32px; height: 32px; cursor: pointer;">✕</button>
     </div>
 
     <div *ngIf="cartItems.length === 0" style="text-align: center; margin: auto 0;">
-      <h3 style="font-size: 20px; margin-bottom: 15px; color: #aaa;">Your cart is empty</h3>
-      <button (click)="isCartOpen = false" style="background: #d4af37; color: #000; border: none; padding: 12px 24px; font-weight: 700; cursor: pointer; border-radius: 6px; text-transform: uppercase;">CONTINUE SHOPPING</button>
+      <h3 style="color: #aaa;">Your cart is empty</h3>
     </div>
 
-    <div *ngIf="cartItems.length > 0" style="flex: 1; overflow-y: auto; padding-right: 5px;">
+    <div *ngIf="cartItems.length > 0" style="flex: 1; overflow-y: auto;">
       <div *ngFor="let item of cartItems" style="display: flex; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 12px;">
-        <img [src]="item.product.image" style="width: 60px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #333;">
+        <img [src]="item.product.image" style="width: 60px; height: 80px; object-fit: cover; border-radius: 6px;">
         <div style="flex: 1;">
-          <h4 style="margin: 0; font-size: 13px; font-weight: 600; color: #fff;">{{ item.product.title }}</h4>
-          <span style="font-size: 11px; color: #aaa; display: block; margin-top: 2px;">Size: {{ item.size }} | Color: {{ item.color }}</span>
-          <div style="font-weight: 700; color: #d4af37; margin-top: 4px; font-size: 14px;">₹{{ item.product.price * item.quantity }}</div>
-          
+          <h4 style="margin: 0; font-size: 13px; color: #fff;">{{ item.product.title }}</h4>
+          <span style="font-size: 11px; color: #aaa;">Size: {{ item.size }}</span>
+          <div style="font-weight: 700; color: #d4af37; margin-top: 4px;">₹{{ item.product.price * item.quantity }}</div>
           <div style="display: flex; align-items: center; gap: 10px; margin-top: 6px;">
-            <button (click)="updateQuantity(item, -1)" style="padding: 1px 8px; border: 1px solid #444; background: #222; color: #fff; cursor: pointer; border-radius: 3px;">-</button>
-            <span style="font-size: 12px; font-weight: 600; color: #fff;">{{ item.quantity }}</span>
-            <button (click)="updateQuantity(item, 1)" style="padding: 1px 8px; border: 1px solid #444; background: #222; color: #fff; cursor: pointer; border-radius: 3px;">+</button>
+            <button type="button" (click)="updateQuantity(item, -1)" style="padding: 1px 8px; background: #222; color: #fff; border: 1px solid #444; cursor: pointer;">-</button>
+            <span style="font-size: 12px;">{{ item.quantity }}</span>
+            <button type="button" (click)="updateQuantity(item, 1)" style="padding: 1px 8px; background: #222; color: #fff; border: 1px solid #444; cursor: pointer;">+</button>
           </div>
         </div>
       </div>
 
-      <div style="background: #1e1e1e; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #333;">
-        <h4 style="margin: 0 0 10px 0; font-size: 12px; font-weight: 700; color: #d4af37; text-transform: uppercase; letter-spacing: 1px;">Delivery Information</h4>
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-          <div>
-            <label style="font-size: 11px; font-weight: 600; color: #aaa; display: block; margin-bottom: 3px;">FULL NAME *</label>
-            <input type="text" [(ngModel)]="customerName" placeholder="Enter your full name" style="width: 100%; padding: 8px; font-size: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 4px; box-sizing: border-box; outline: none;">
-          </div>
-          <div>
-            <label style="font-size: 11px; font-weight: 600; color: #aaa; display: block; margin-bottom: 3px;">MOBILE NUMBER *</label>
-            <input type="tel" [(ngModel)]="customerPhone" placeholder="Enter mobile number" style="width: 100%; padding: 8px; font-size: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 4px; box-sizing: border-box; outline: none;">
-          </div>
-          <div>
-            <label style="font-size: 11px; font-weight: 600; color: #aaa; display: block; margin-bottom: 3px;">DELIVERY ADDRESS *</label>
-            <textarea [(ngModel)]="customerAddress" placeholder="Door No, Street, City, Pincode" rows="2" style="width: 100%; padding: 8px; font-size: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 4px; box-sizing: border-box; outline: none; resize: none;"></textarea>
-          </div>
+      <div style="background: #1e1e1e; padding: 15px; border-radius: 8px; margin-top: 15px;">
+        <h4 style="margin: 0 0 10px 0; font-size: 12px; color: #d4af37;">Delivery Details</h4>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <input type="text" [(ngModel)]="customerName" placeholder="Full Name" style="padding: 8px; background: #000; border: 1px solid #333; color: #fff; border-radius: 4px; font-size: 12px;">
+          <input type="tel" [(ngModel)]="customerPhone" placeholder="Mobile Number" style="padding: 8px; background: #000; border: 1px solid #333; color: #fff; border-radius: 4px; font-size: 12px;">
+          <textarea [(ngModel)]="customerAddress" placeholder="Delivery Address" rows="2" style="padding: 8px; background: #000; border: 1px solid #333; color: #fff; border-radius: 4px; font-size: 12px; resize: none;"></textarea>
         </div>
       </div>
     </div>
 
-    <div *ngIf="cartItems.length > 0" style="border-top: 1px solid #222; padding-top: 12px; flex-shrink: 0; background: #141414;">
+    <div *ngIf="cartItems.length > 0" style="border-top: 1px solid #222; padding-top: 12px; margin-top: auto;">
       <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 16px; margin-bottom: 12px;">
-        <span>Total Payable:</span>
+        <span>Total:</span>
         <span style="color: #d4af37;">₹{{ getCartTotal() }}</span>
       </div>
-      <button (click)="sendWhatsAppOrder()" style="width: 100%; background: #25D366; color: white; border: none; padding: 13px; font-weight: 700; border-radius: 6px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+      <button type="button" (click)="sendWhatsAppOrder()" style="width: 100%; background: #25D366; color: white; border: none; padding: 13px; font-weight: 700; border-radius: 6px; cursor: pointer;">
         💬 ORDER ON WHATSAPP
       </button>
     </div>
-
   </div>
 </div>
 
-<!-- PRODUCT QUICK VIEW MODAL -->
-<div *ngIf="isProductModalOpen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 2500; display: flex; justify-content: center; align-items: center; padding: 15px; box-sizing: border-box;">
-  <div style="width: 100%; max-width: 520px; max-height: 90vh; background: #141414; border: 2px solid #d4af37; border-radius: 16px; color: #fff; padding: 20px; overflow-y: auto; position: relative; box-sizing: border-box;">
-    <button (click)="closeProductModal()" style="position: absolute; top: 12px; right: 15px; background: #222; border: 1px solid #444; color: #fff; border-radius: 50%; width: 32px; height: 32px; cursor: pointer;">✕</button>
-
-    <div *ngIf="selectedProduct">
-      <span style="color: #d4af37; font-size: 11px; text-transform: uppercase; font-weight: 700;">{{ selectedProduct.brand }}</span>
-      <h2 style="font-size: 18px; margin: 4px 0 12px 0;">{{ selectedProduct.title }}</h2>
-
-      <div style="height: 240px; border-radius: 10px; overflow: hidden; border: 1px solid #222; text-align: center; background: #000;">
-        <img [src]="activeImage" style="width: 100%; height: 100%; object-fit: contain;">
-      </div>
-
-      <div style="display: flex; gap: 8px; margin-top: 10px; justify-content: center;">
-        <img *ngFor="let img of selectedProduct.gallery" [src]="img" (click)="activeImage = img" [style.border-color]="activeImage === img ? '#d4af37' : '#333'" style="width: 48px; height: 48px; object-fit: cover; border-radius: 6px; border: 2px solid; cursor: pointer;">
-      </div>
-
-      <div style="margin: 12px 0; display: flex; justify-content: space-between; align-items: center; background: #1e1e1e; padding: 10px 14px; border-radius: 8px;">
-        <span style="font-size: 22px; font-weight: 700; color: #d4af37;">₹{{ selectedProduct.price }}</span>
-        <span style="background: #333; color: #ddd; padding: 4px 10px; border-radius: 4px; font-size: 11px;">{{ selectedProduct.fabric }}</span>
-      </div>
-
-      <div style="margin-bottom: 12px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-          <label style="font-size: 11px; color: #aaa;">SELECT SIZE:</label>
-          <button (click)="isSizeChartOpen = true" style="background: none; border: none; color: #d4af37; font-size: 12px; cursor: pointer; text-decoration: underline; font-weight: 600;">
-            📏 Size Chart Guide
-          </button>
-        </div>
-        
-        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-          <button *ngFor="let size of selectedProduct.sizes" 
-                  (click)="selectedSize = size" 
-                  [style.background]="selectedSize === size ? '#d4af37' : '#1a1a1a'" 
-                  [style.color]="selectedSize === size ? '#000000' : '#ffffff'" 
-                  [style.opacity]="!selectedSize || selectedSize === size ? '1' : '0.5'"
-                  style="border: 1px solid #d4af37; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; position: relative; overflow: hidden; min-width: 42px;">
-            
-            {{ size }}
-
-            <span *ngIf="selectedSize && selectedSize !== size" 
-                  style="position: absolute; top: 50%; left: -20%; width: 140%; height: 1.5px; background-color: #ff4d4d; transform: rotate(-25deg); pointer-events: none;">
-            </span>
-          </button>
-
-          <button *ngIf="selectedSize" 
-                  (click)="selectedSize = ''" 
-                  style="background: none; border: none; color: #aaa; font-size: 11px; font-weight: 600; cursor: pointer; text-transform: uppercase; margin-left: 5px;">
-            CLEAR
-          </button>
-        </div>
-      </div>
-
-      <div style="margin-bottom: 18px;">
-        <label style="display: block; font-size: 11px; color: #aaa; margin-bottom: 6px;">SELECT COLOR:</label>
-        <div style="display: flex; gap: 8px;">
-          <button *ngFor="let color of selectedProduct.colors" (click)="selectedColor = color" [style.border-color]="selectedColor === color ? '#d4af37' : '#444'" style="background: #222; color: #fff; border: 1px solid; padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer;">{{ color }}</button>
-        </div>
-      </div>
-
-      <button (click)="addToCartFromModal()" style="width: 100%; background: linear-gradient(90deg, #ffd700, #d4af37); color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: 800; font-size: 15px; cursor: pointer; text-transform: uppercase;">
-        🛒 ADD TO CART • ₹{{ selectedProduct.price }}
-      </button>
+<!-- WISHLIST DRAWER -->
+<div *ngIf="isWishlistOpen && !isAdmin" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 2000; display: flex; justify-content: flex-end;">
+  <div style="width: 100%; max-width: 420px; background: #141414; border-left: 2px solid #d4af37; height: 100vh; padding: 30px; position: relative; color: #fff; overflow-y: auto;">
+    <button type="button" (click)="isWishlistOpen = false" style="position: absolute; top: 20px; right: 20px; background: #222; border: 1px solid #444; color: #fff; border-radius: 50%; width: 32px; height: 32px; cursor: pointer;">✕</button>
+    <h2 style="font-size: 22px; margin-bottom: 20px; color: #d4af37;">Your Wishlist</h2>
+    <div *ngIf="wishlistItems.length === 0" style="text-align: center; margin-top: 60px;">
+      <p style="color: #aaa;">No products in wishlist</p>
     </div>
-  </div>
-</div>
-
-<!-- SIZE CHART POPUP MODAL -->
-<div *ngIf="isSizeChartOpen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 3000; display: flex; justify-content: center; align-items: center; padding: 15px; box-sizing: border-box;">
-  <div style="width: 100%; max-width: 500px; position: relative;">
-    <button (click)="isSizeChartOpen = false" style="position: absolute; top: -12px; right: -12px; background: #222; border: 1px solid #d4af37; color: #fff; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; z-index: 10;">✕</button>
-    <app-size-chart></app-size-chart>
+    <div *ngFor="let item of wishlistItems" style="display: flex; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 15px; align-items: center;">
+      <img [src]="item.image" style="width: 60px; height: 75px; object-fit: cover; border-radius: 6px;">
+      <div style="flex: 1;">
+        <h4 style="margin: 0; font-size: 14px; color: #fff;">{{ item.title }}</h4>
+        <span style="font-weight: 700; color: #d4af37;">₹{{ item.price }}</span>
+      </div>
+      <button type="button" (click)="toggleWishlist(item)" style="background: none; border: none; color: #ff4d4d; cursor: pointer;">Remove</button>
+    </div>
   </div>
 </div>
