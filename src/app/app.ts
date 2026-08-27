@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { collection, getDocs, doc, updateDoc, addDoc, deleteDoc, setDoc, getDoc, query, where, orderBy } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, addDoc, deleteDoc, setDoc, getDoc, query, where } from 'firebase/firestore';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth, db } from './firebase';
 
@@ -116,7 +116,7 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     await this.loadProductsFromDatabase();
     
-    auth.onAuthStateChanged(async (user) => {
+    auth.onAuthStateChanged(async (user: any) => {
       if (user) {
         this.isLoggedIn = true;
         this.isAdmin = (user.email === 'admin@gmail.com' || user.email === 'christiraj2003@gmail.com');
@@ -159,7 +159,7 @@ export class AppComponent implements OnInit {
     try {
       const querySnapshot = await getDocs(collection(db, 'products'));
       const dbProducts: Product[] = [];
-      querySnapshot.forEach((docSnap) => {
+      querySnapshot.forEach((docSnap: any) => {
         const data = docSnap.data();
         let formattedSizeStocks: SizeStock[] = data['sizeStocks'] || [
           { size: 'S', inStock: true }, { size: 'M', inStock: true }, { size: 'L', inStock: true }, { size: 'XL', inStock: true }, { size: '2XL', inStock: true }
@@ -180,7 +180,6 @@ export class AppComponent implements OnInit {
         });
       });
 
-      // Sort newest products first so they appear at top of NEW ARRIVALS & general list
       dbProducts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
       this.products = dbProducts;
     } catch (error: any) {
@@ -373,7 +372,7 @@ export class AppComponent implements OnInit {
         image: this.newImage.trim(),
         sizeStocks,
         inStock: hasAnyStock,
-        createdAt: Date.now() // Timestamps newest products first
+        createdAt: Date.now()
       });
 
       this.showTimedPopup('📦 New Kurti Published as New Arrival!');
@@ -411,7 +410,7 @@ export class AppComponent implements OnInit {
   filteredProducts() {
     return this.products.filter(p => {
       if (this.selectedCategory === 'New Arrivals') {
-        return true; // Show all sorted by newest
+        return true;
       }
       const matchCat = this.selectedCategory === 'All' || p.category.toLowerCase() === this.selectedCategory.toLowerCase();
       const matchSearch = !this.searchQuery || p.title.toLowerCase().includes(this.searchQuery.toLowerCase()) || p.brand.toLowerCase().includes(this.searchQuery.toLowerCase());
