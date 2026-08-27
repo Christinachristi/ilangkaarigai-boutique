@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+  import { Component, OnInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -42,7 +42,7 @@ interface CartItem {
 })
 export class AppComponent implements OnInit {
   boutiqueName = 'இளங்காரிகை';
-  whatsappNumber = '919876543210';
+  whatsappNumber = '916369620670';
   newsletterEmail = '';
 
   viewMode: 'home' | 'about' | 'admin' = 'about';
